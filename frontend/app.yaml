@@ -1,0 +1,17 @@
+runtime: nodejs20
+
+handlers:
+  - url: /
+    secure: always
+    static_files: dist/frontend/browser/index.html
+    upload: dist/frontend/browser/index.html
+
+  - url: /(.*\.(.+))$
+    secure: always
+    static_files: dist/frontend/browser/\1
+    upload: dist/frontend/browser/(.*\.(.+))$
+
+  - url: /(.*)
+    secure: always
+    static_files: dist/frontend/browser/index.html
+    upload: dist/frontend/browser/index.html

@@ -1,0 +1,36 @@
+<div class="container my-md-3 p-0">
+  <h1 class="col-md-8 mx-auto">My Watchlist</h1>
+  <mat-spinner *ngIf="isLoading" class="mt-2 mx-auto"></mat-spinner>
+  <ngb-alert [dismissible]="false" *ngIf="!isLoading && isEmpty" class="text-center text-dark mx-3">Currently you don't have any stock in your watchlist.</ngb-alert>
+</div>
+<div class="container mt-0 p-md-3 p-md-0 mb-3">
+  <div *ngIf="!isLoading && !isEmpty">
+    <div *ngFor="let item of watchlistElements | keyvalue" class="card col-12 col-md-8 mx-auto p-0 mt-4 mb-4">
+      <div class="card-body" (click)="goToTickerSearch(item.key)">
+        <div class="close-icon-container">
+            <span class="close-icon" (click)="removeFromWatchlist(item.key)">&times;</span>
+        </div>
+        <div class="container">
+          <div class="row">
+            <div class="col-6 ps-0">
+                <h3 class="card-title">{{ item.key | uppercase}}</h3>
+                <h5>{{ item.value.name }}</h5>
+            </div>
+            <div class="col-6">
+                <h5 class="price" [ngClass]="{'positive': item.value.d > 0, 'negative': item.value.d < 0}">{{ item.value.c | number:'1.0-2' }}</h5>
+                <p [ngClass]="{'positive': item.value.d > 0, 'negative': item.value.d < 0}">
+                  <svg *ngIf="item.value.d > 0" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-up-fill" viewBox="0 0 16 16">
+                    <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"/>
+                  </svg>
+                  <svg *ngIf="item.value.d < 0" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
+                    <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+                  </svg>
+                    {{ item.value.d | number:'1.0-2' }} ({{ item.value.dp | number:'1.0-2' }}%)
+                </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

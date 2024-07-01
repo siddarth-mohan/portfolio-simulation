@@ -1,0 +1,12 @@
+.positive {
+  color: #4caf50;
+}
+
+.negative {
+  color: #f44336;
+}
+
+
+.card-body{
+  cursor: pointer;
+}

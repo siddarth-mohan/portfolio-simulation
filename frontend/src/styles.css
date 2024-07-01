@@ -1,0 +1,12 @@
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+.footer {
+  margin-top: 2rem;
+  background-color: #dddddd;
+  text-align: center;
+  padding-top: 0.8rem;
+  padding-bottom: 0.1rem;
+}

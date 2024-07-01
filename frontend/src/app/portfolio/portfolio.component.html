@@ -1,0 +1,101 @@
+<div *ngIf="transactionSuccess" class="container mt-3 mx-auto p0">
+    <ngb-alert
+    type= 'success'
+    *ngIf = "transactionSuccess && buyTransaction"
+    class="text-center text-dark mx-3"
+    >{{transactionTicker}} bought successfully.
+    </ngb-alert>
+
+    <ngb-alert
+    type= 'danger'
+    *ngIf = "transactionSuccess && !buyTransaction"
+    class="text-center text-dark mx-3"
+    >{{transactionTicker}} sold successfully.
+    </ngb-alert>
+</div>
+<div class="container my-5 p-0">
+    <h1 class="mx-2">My Portfolio</h1>
+    <h3 *ngIf="!isLoading" class="mx-2">Money in Wallet: ${{fundsAvailable | number:'1.0-2'}}</h3>
+</div>
+
+<div *ngIf="isLoading" class="container my-auto mx-auto p-0">
+  <div class="text-center">
+      <div *ngIf="!isEmpty && isLoading" class="spinner-border mt-4 mx-auto" role="status" style="color: #0000ff;width: 100px; height: 100px; border-width: 10px;">
+          <span class="sr-only">Loading...</span>
+      </div>
+  </div>
+</div>
+
+<div *ngIf="!isLoading" class="container my-auto mx-auto p-0 mx-xs-4">
+    <ngb-alert
+    [dismissible]="false"
+    *ngIf = "isEmpty && !isLoading"
+    class="text-center text-dark mx-3"
+    >Currently you don't have any stock.
+    </ngb-alert>
+
+
+
+    <div *ngFor="let item of trial" class="card col-12 p-0 mt-4 mb-4">
+      <div class="card-header d-flex align-items-baseline" (click)="goToTickerSearch(item.ticker)">
+          <h4 class="mb-0">{{item.ticker}}</h4>
+          <h6 class="mb-0 ms-2" style="color: gray;">{{item.name}}</h6>
+      </div>
+
+      <div class="card-body font-weight-bold">
+        <div class="card-text row m-0 my-2 px-0 ml-xl-3">
+          <div class="col-sm mx-2">
+            <div class="row m-0 p-0">
+              <div class="col m-0 p-0">Quantity:</div>
+              <div class="col m-0 p-0 text-left">
+                {{ item.qty | number: "1.2-2" }}
+              </div>
+            </div>
+            <div class="row m-0 p-0">
+              <div class="col m-0 p-0">Avg. Cost/Share:</div>
+              <div class="col m-0 p-0 text-left">
+                {{ item.avgCost | number: "1.0-2" }}
+              </div>
+            </div>
+            <div class="row m-0 p-0">
+              <div class="col m-0 p-0">Total Cost:</div>
+              <div class="col m-0 p-0 text-left">
+                {{ item.totalCost | number: "1.0-2" }}
+              </div>
+            </div>
+          </div>
+          <div class="col-sm mx-2">
+            <div class="row m-0 p-0">
+              <div class="col m-0 p-0">Change:</div>
+              <div class="col m-0 p-0 text-left" [ngClass]="{'positive': item.change > 0, 'negative': item.change < 0}"> 
+                <svg *ngIf="item.change > 0" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-up-fill" viewBox="0 0 16 16">
+                  <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"/>
+                </svg>
+                <svg *ngIf="item.change < 0" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
+                  <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+                </svg>
+                {{ item.change | number: "1.0-2" }}
+              </div>
+            </div>
+            <div class="row m-0 p-0">
+              <div class="col m-0 p-0">Current Price:</div>
+              <div class="col m-0 p-0 text-left" [ngClass]="{'positive': item.change > 0, 'negative': item.change < 0}">
+                {{ item.currentPrice | number: "1.0-2" }}
+              </div>
+            </div>
+            <div class="row m-0 p-0">
+              <div class="col m-0 p-0">Market Value:</div>
+              <div class="col m-0 p-0 text-left" [ngClass]="{'positive': item.change > 0, 'negative': item.change < 0}">
+                {{ item.marketValue | number: "1.0-2" }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer">
+          <button type="button" class="btn btn-primary me-2" (click)="open(item, true)">Buy</button>
+          <button type="button" class="btn btn-danger" (click)="open(item, false)">Sell</button>
+      </div>
+    </div>
+    
+</div>

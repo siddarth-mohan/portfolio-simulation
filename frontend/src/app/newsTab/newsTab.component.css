@@ -1,0 +1,7 @@
+::ng-deep ngb-modal-backdrop {
+    z-index: 150 !important;
+}
+
+.row > svg {
+  width: auto;
+}

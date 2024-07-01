@@ -1,0 +1,37 @@
+<div class="container-fluid">
+    <div class="row">
+      <div class="col-12 col-xl-6">
+        <div id="quoteInfo" class="col-xl-7 mt-xl-2 text-center">
+          <br>
+          <span>High Price: {{quote.h}}</span><br>
+          <span>Low Price: {{quote.l}}</span><br>
+          <span>Open Price: {{quote.o}}</span><br>
+          <span>Prev. Close: {{quote.pc}}</span>
+        </div>
+        <div id="companyInfo" class="mt-xl-4 text-center">
+          <h5 style="text-decoration: underline;">About the Company</h5>
+          <p>IPO Start Date: {{ basicInfo.ipo.substring(0,10) }}</p>
+          <p>Industry: {{ basicInfo.finnhubIndustry }}</p>
+          <p>Webpage: <a target="_blank" href="{{basicInfo.weburl}}" style="text-decoration: underline;">{{ basicInfo.weburl }}</a></p>
+          <p>Company Peers:</p>
+          <div *ngIf="peers && peers.length">
+            <ng-container *ngFor="let peer of peers; let isLast = last">
+              <a href="/search/{{ peer }}" style="text-decoration: underline;">{{ peer }}</a><span *ngIf="!isLast">, </span>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+  
+  
+      <div class="col-12 col-xl-6 d-flex">
+            <highcharts-chart
+              *ngIf="Highcharts && basicInfo && chartOptions && isDataAvailable"
+              [Highcharts]="Highcharts"
+              [constructorType]="constructorType"
+              [options]="chartOptions"
+              style="width: 100%;"
+            >
+            </highcharts-chart>
+      </div>
+    </div>
+  </div>

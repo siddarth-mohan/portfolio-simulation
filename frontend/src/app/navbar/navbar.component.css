@@ -1,0 +1,15 @@
+nav {
+    background-color: #2828b3;
+    color: white;
+    padding-right: 3rem;
+}
+
+.active {
+    border: 1px solid white;
+    border-radius: 10px;
+}
+
+li{
+    margin-left: 0.3rem;
+    margin-right: 0.3rem;
+}

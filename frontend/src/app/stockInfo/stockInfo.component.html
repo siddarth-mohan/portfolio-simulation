@@ -1,0 +1,106 @@
+<app-search></app-search>
+<link href="https://use.fontawesome.com/releases/v5.15.1/css/all.css" rel="stylesheet">
+<link href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" rel="stylesheet">
+
+<div class="container mt-3 mx-auto p0">
+  <mat-spinner *ngIf="isLoading" class="mx-auto mt-5"></mat-spinner>
+</div>
+
+<div class="container mt-5 mx-auto p0" *ngIf="!isLoading && isTickerInvalid">
+  <ngb-alert
+  type= 'danger'
+  [dismissible]="false"
+  *ngIf="!isLoading && isTickerInvalid"
+  class="py-3 col-12 text-center text-dark mt-5 p-2"
+  ><p class="my-auto">No data found. Please enter a valid Ticker.</p>
+  </ngb-alert>
+</div>
+
+<div *ngIf="transactionSuccess" class="container mt-3 mx-auto p0">
+  <ngb-alert
+  type= 'success'
+  *ngIf = "transactionSuccess && buyTransaction"
+  class="text-center text-dark mx-3"
+  >{{transactionTicker}} bought successfully.
+  </ngb-alert>
+
+  <ngb-alert
+  type= 'danger'
+  *ngIf = "transactionSuccess && !buyTransaction"
+  class="text-center text-dark mx-3"
+  >{{transactionTicker}} sold successfully.
+  </ngb-alert>
+</div>
+
+<div *ngIf="watchlistButtonClicked" class="container mt-3 mx-auto p0">
+  <ngb-alert
+  type= 'success'
+  *ngIf = "watchlistButtonClicked && isWatchlisted"
+  class="text-center text-dark mx-3"
+  >{{basicInfo.ticker}} added to Watchlist.
+  </ngb-alert>
+
+  <ngb-alert
+  type= 'danger'
+  *ngIf = "watchlistButtonClicked && !isWatchlisted"
+  class="text-center text-dark mx-3"
+  >{{basicInfo.ticker}} removed from Watchlist.
+  </ngb-alert>
+</div>
+
+<div *ngIf="!isLoading && !isTickerInvalid" class="container mb-3">
+  <div class="row justify-content-center mr-md-2" style="height: 80%; align-items: flex-start;" id="rowOfContainer"> 
+    <div class="col-sm-4 col-5 d-flex flex-column align-items-center justify-content-center" style="padding-left: 0px; padding-right: 0px;">
+      <span class="stock-symbol d-flex align-items-center justify-content-center">{{basicInfo.ticker}}   
+        <svg *ngIf="!isWatchlisted" (click)="addOrRemoveFromWatchlist()" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="ms-2 bi bi-star" viewBox="0 0 16 16">
+          <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.56.56 0 0 0-.163-.505L1.71 6.745l4.052-.576a.53.53 0 0 0 .393-.288L8 2.223l1.847 3.658a.53.53 0 0 0 .393.288l4.052.575-2.906 2.77a.56.56 0 0 0-.163.506l.694 3.957-3.686-1.894a.5.5 0 0 0-.461 0z"/>
+        </svg>
+        <svg *ngIf="isWatchlisted" (click)="addOrRemoveFromWatchlist()" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="gold" class="ms-2 bi bi-star-fill" viewBox="0 0 16 16">
+          <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+        </svg>
+      </span>
+      <div class="stock-name" style="color: grey;"><h5>{{basicInfo.name}}</h5></div>
+      <div class="stock-exchange" style="text-align: center;"><p>{{basicInfo.exchange}}</p></div>
+      <div class="transaction-buttons d-flex">
+        <button class="btn btn-success buy-button mt-2 me-2" (click)="open({},true)">Buy</button>
+        <button *ngIf="isInPortfolio" class="btn btn-danger buy-button mt-2" (click)="open({},false)">Sell</button>
+      </div>
+    </div>
+
+    <div class="col-2 col-sm-3 col-xl-3 d-flex justify-content-center align-items-center p-0">
+      <div class="stock-logo d-md-none d-flex" style="height: 100%; align-items: center;">
+        <img width="60px" height="60px" src="{{basicInfo.logo}}" alt="{{basicInfo.name}}" class="img-fluid">
+      </div>
+      <div class="stock-logo d-none d-md-flex" style="height: 100%; align-items: center;">
+        <img width="120px" height="120px" src="{{basicInfo.logo}}" alt="{{basicInfo.name}}" class="img-fluid">
+      </div>
+    </div>
+    
+    <div class="col-sm-3 col-5 d-flex flex-column align-items-center justify-content-center" [ngClass]="{'positive': quote.d > 0, 'negative': quote.d < 0}" style="padding-left: 0px; padding-right: 0px;">
+      <div class="stock-price">{{quote.c | number:'1.0-2'}}</div>
+      <div class="stock-change" [ngClass]="{'positive': quote.d > 0, 'negative': quote.d < 0}">
+        <svg *ngIf="quote.d > 0" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-up-fill" viewBox="0 0 16 16">
+          <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"/>
+        </svg>
+        <svg *ngIf="quote.d < 0" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
+          <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+        </svg>
+        {{ quote.d | number:'1.0-2' }} ({{ quote.dp | number:'1.0-2' }}%)
+      </div>
+      <div class="quoteTimestamp mt-2">{{ quote.t }}</div>
+    </div>
+  </div>
+  <div class="row mt-2">
+    <div class="col-12 text-center" [ngClass]="{'positive': isMarketOpen, 'negative': !isMarketOpen}">
+      <span class="market-status">{{marketStatus}}</span>
+    </div>
+  </div>
+
+  <mat-tab-group *ngIf="!isLoading">
+    <mat-tab label="Summary"><app-summaryTab></app-summaryTab></mat-tab>
+    <mat-tab label="Top News"><app-newsTab></app-newsTab></mat-tab>
+    <mat-tab label="Charts"><app-charts-tab></app-charts-tab> </mat-tab>
+    <mat-tab label="Insights"><app-insights-tab></app-insights-tab></mat-tab>
+  </mat-tab-group>
+  
+</div>

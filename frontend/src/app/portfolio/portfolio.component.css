@@ -1,0 +1,16 @@
+
+::ng-deep ngb-modal-backdrop {
+    z-index: 150 !important;
+}
+
+.card-header{
+    cursor: pointer;
+}
+
+.positive{
+    color: green;
+}
+
+.negative{
+    color : red;
+}

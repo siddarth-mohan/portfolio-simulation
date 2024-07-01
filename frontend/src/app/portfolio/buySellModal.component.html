@@ -1,0 +1,33 @@
+<div class="containerModal" style="z-index:2000;">
+    <div class="modal-header">
+        <p>{{portfolioElement.ticker}}</p>
+        <span aria-label="Close" (click)="activeModal.dismiss('Cross click')" style="text-decoration: underline; color: blue; cursor: pointer;">X</span>
+    </div>
+    
+    <div class="modal-body">
+        <span>Current Price: {{portfolioElement.currentPrice | number:'1.0-2'}}</span><br>
+        <span>Money in Wallet: ${{fundsAvailable | number:'1.0-2'}}</span>
+        <div class="row">
+            <div class="col-auto">
+                <label for="quantity" class="form-label">Quantity:</label>
+            </div>
+            <div class="col">
+                <input type="number" required min="1" id="quantity" name="quantity" [(ngModel)]="quantityInput" style="width: 100%;">
+            </div>
+        </div>
+        <span *ngIf="isBuy && quantityInput * portfolioElement.currentPrice > fundsAvailable" style="color:red;">Not Enough Money In Wallet!</span>
+        <span *ngIf="!isBuy && quantityInput > portfolioElement.qty" style="color:red;">You cannot sell the stocks you dont have!</span>
+    </div>
+
+    <div class="modal-footer d-flex justify-content-between">
+        <div class="tot">
+                <span>Total: {{quantityInput * portfolioElement.currentPrice | number:'1.0-2'}}</span>
+        </div>
+        <div *ngIf="isBuy">
+            <button [disabled]="quantityInput < 1 || (quantityInput * portfolioElement.currentPrice) > fundsAvailable" type="button" class="btn btn-success me-2" (click)="performTransaction('buy')">Buy</button>
+        </div>
+        <div *ngIf="!isBuy">
+            <button [disabled]="quantityInput < 1 || quantityInput > portfolioElement.qty" type="button" class="btn btn-success" (click)="performTransaction('sell')">Sell</button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,46 @@
+::ng-deep ngb-modal-backdrop {
+  z-index: 150 !important;
+}
+
+.golden-color {
+  fill : gold;
+}
+
+.stock-symbol {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-right: 0.5rem;
+}
+
+.stock-price {
+  font-size: 2rem;
+}
+
+.stock-change {
+  font-size: 1.1rem;
+}  
+
+.negative {
+  color: #FF0000; 
+}
+
+.positive {
+  color: green; 
+}
+  
+.buy-button {
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.3rem;
+  margin-top: 0.5rem;
+  cursor: pointer;
+}
+
+.quoteTimestamp {
+  font-size: 0.9rem;
+  color: #666;
+  margin-top: 0.5rem;
+}
+  
+  
